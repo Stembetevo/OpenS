@@ -23,15 +23,11 @@ export class ShinamiService {
     const region = apiKey.split('_')[0];
     // Use regional endpoint like: https://api.us1.shinami.com/gas/v1
     this.gasApiUrl = `https://api.${region}.shinami.com/gas/v1`;
-    console.log('Initialized Shinami Gas Station with endpoint:', this.gasApiUrl);
+    
   }
 
   async sponsorTransactionBlock(txBytes: string, sender: string, gasBudget?: number): Promise<ShinamiSponsorResponse> {
     try {
-      console.log('Sponsoring transaction with Shinami...');
-      console.log('TX Bytes length:', txBytes.length);
-      console.log('Sender:', sender);
-      
       // Shinami expects params as: [txBytes, sender, gasBudget (optional)]
       const params: any[] = [txBytes, sender];
       
@@ -55,9 +51,6 @@ export class ShinamiService {
         }
       );
 
-      console.log('Shinami response status:', response.status);
-      console.log('Shinami response data:', JSON.stringify(response.data, null, 2));
-
       if (response.data.error) {
         console.error('Shinami API Error:', response.data.error);
         throw new Error(`Shinami API Error: ${response.data.error.message}`);
@@ -71,13 +64,10 @@ export class ShinamiService {
     } catch (error: unknown) {
       if (axios.isAxiosError(error)) {
         if (error.response) {
-          console.error('Shinami API Error Response:', error.response.data);
           throw new Error(`Shinami API Error: ${error.response.status} - ${JSON.stringify(error.response.data)}`);
         }
-        console.error('Shinami Network Error:', error.message);
         throw new Error(`Shinami Network Error: ${error.message}`);
       }
-      console.error('Unknown error:', error);
       throw error;
     }
   }

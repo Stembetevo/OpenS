@@ -31,6 +31,7 @@ await fastify.register(cors, {
   credentials: true,
 });
 
+
 // Set the validator and serializer for Zod
 fastify.setValidatorCompiler(validatorCompiler);
 fastify.setSerializerCompiler(serializerCompiler);
